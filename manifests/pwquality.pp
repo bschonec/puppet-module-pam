@@ -32,7 +32,7 @@ class pam::pwquality (
   Integer[0, 1] $enforcing                  = 1,
   Integer[0] $retry                         = 3,
   Boolean $enforce_for_root                 = false,
-  Boolean $local_users_only                 = false
+  Boolean $local_users_only                 = false,
   Stdlib::Absolutepath $pwquality_conf_file = '/etc/security/pwquality',
 ) {
 
