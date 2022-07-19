@@ -29,14 +29,14 @@ class pam::faillock (
 
   # For now, only RHEL8 and newer are supported.
   if ($facts['os']['release']['major'] in ['7', '8', '9']) {
-    concat { $pwquality_conf_file:
+    concat { $faillock_conf_file:
       owner   => $pam_d_login_owner,
       group   => $pam_d_login_group,
       mode    => $pam_d_login_mode,
     }   
         
     concat::fragment {'rhel8stuff':
-      target  => $pwquality_conf_file,
+      target  => $faillock_conf_file,
       order   => 20,
       content => template('pam/faillock.conf.erb'),
     }
