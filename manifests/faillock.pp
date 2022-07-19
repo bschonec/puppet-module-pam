@@ -35,7 +35,7 @@ class pam::faillock (
       mode    => $pam_d_login_mode,
     }   
         
-    concat::fragment {'rhel8stuff':
+    concat::fragment {'faillock_rhel':
       target  => $faillock_conf_file,
       order   => 20,
       content => template('pam/faillock.conf.erb'),
