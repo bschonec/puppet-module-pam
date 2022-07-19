@@ -23,7 +23,7 @@ class pam::faillock (
   Integer[0] $unlock_time   = 600,
   Boolean $even_deny_root   = false,
   Integer[0] $root_unlock_time = 900,
-  Optional[String] $admin_group = undef,
+  Optional[String[1]] $admin_group = undef,
   Stdlib::Absolutepath $faillock_conf_file = '/etc/security/faillock.conf',
 ) {
 
