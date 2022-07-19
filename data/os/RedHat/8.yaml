@@ -48,6 +48,17 @@ pam::pam_password_session_lines:
   - 'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid'
   - 'session     required      pam_unix.so'
 
+pam::pwquality::difok: 1
+pam::pwquality::minlen: 8
+pam::pwquality::dcredit: 0
+pam::pwquality::ucredit: 0
+pam::pwquality::lcredit: 0
+pam::pwquality::ocredit: 0
+pam::pwquality::minclass: 0
+pam::pwquality::maxrepeat: 0
+pam::pwquality::maxclassrepeat: 0
+pam::pwquality::gecoscheck: 0
+pam::pwquality::maxsequence: 0
 
 
 pam::pwquality::dictcheck: 1
@@ -55,5 +66,3 @@ pam::pwquality::usercheck: 1
 pam::pwquality::usersubstr: 0
 pam::pwquality::enforcing: 1
 pam::pwquality::retry: 3
-pam::pwquality::enforce_for_root: false
-pam::pwquality::local_users_only: false
