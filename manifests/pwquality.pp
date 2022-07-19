@@ -47,7 +47,7 @@ class pam::pwquality (
   }
 
   concat::fragment {'rhel8stuff':
-    target  => /etc/security/pwquality.conf,
+    target  => '/etc/security/pwquality.conf',
     order   => 10,
     content => template('pam/pwquality.conf.el8.erb'),
   }
