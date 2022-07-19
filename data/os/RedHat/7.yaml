@@ -61,4 +61,3 @@ pam::pwquality::maxrepeat: 0
 pam::pwquality::maxclassrepeat: 0
 pam::pwquality::gecoscheck: 0
 pam::pwquality::maxsequence: 0
-pam::pwquality::dictcheck: 0

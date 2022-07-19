@@ -27,14 +27,29 @@ class pam::pwquality (
   Integer[0, 1] $gecoscheck = 0,
   Optional[Array[String[1]]] $badwords = [],
   Optional[Stdlib::Absolutepath] $dictpath = undef,
+  Integer[0, 1] $dictcheck = 1,
+  Integer[0, 1] $usercheck = 1,
+  Integer[0, 1] $usersubstr = 0,
+  Integer[0, 1] $enforcing = 1,
+  Integer[0] $retry = 3,
+  Boolean $enforce_for_root = false,
+  Boolean $local_users_only = false
 ) {
 
+
+  # First build the parameters are common on RHEL6 through RHEL8.
   file { '/etc/security/pwquality.conf':
     ensure  => file,
     content => template('pam/pwquality.conf.el7.erb'),
     owner   => $pam_d_login_owner,
     group   => $pam_d_login_group,
     mode    => $pam_d_login_mode,
+  }
+
+  concat::fragment {'rhel8stuff':
+    target  => /etc/security/pwquality.conf,
+    order   => 10,
+    content => template('pam/pwquality.conf.el8.erb'),
   }
 
 }

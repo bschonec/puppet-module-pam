@@ -1,0 +1,29 @@
+<%# Intentionally blank line %>
+# Whether to check for the words from the cracklib dictionary.
+# The check is enabled if the value is not 0.
+dictcheck = <%= @dictcheck %>
+#
+# Whether to check if it contains the user name in some form.
+# The check is enabled if the value is not 0.
+usercheck = <%= @usercheck %>
+#
+# Length of substrings from the username to check for in the password
+# The check is enabled if the value is greater than 0 and usercheck is enabled.
+usersubstr = <%= @usersubstr %>
+#
+# Whether the check is enforced by the PAM module and possibly other
+# applications.
+# The new password is rejected if it fails the check and the value is not 0.
+enforcing = <%= @enforcing %>
+#
+# Prompt user at most N times before returning with error. The default is 1.
+retry = <%= @retry %>
+#
+# Enforces pwquality checks on the root user password.
+# Enabled if the option is present.
+<% if not @enforce_for_root %># <% end %> enforce_for_root
+#
+# Skip testing the password quality for users that are not present in the
+# /etc/passwd file.
+# Enabled if the option is present.
+<% if not @local_users_only %># <% end %>local_users_only
