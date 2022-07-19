@@ -49,4 +49,3 @@ pam::pam_password_session_lines:
   - '-session     optional      pam_systemd.so'
   - 'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid'
   - 'session     required      pam_unix.so'
-
