@@ -33,7 +33,7 @@ class pam::pwquality (
   Integer[0] $retry                         = 3,
   Boolean $enforce_for_root                 = false,
   Boolean $local_users_only                 = false,
-  Stdlib::Absolutepath $pwquality_conf_file = '/etc/security/pwquality',
+  Stdlib::Absolutepath $pwquality_conf_file = '/etc/security/pwquality.conf',
 ) {
 
   concat { $pwquality_conf_file:
