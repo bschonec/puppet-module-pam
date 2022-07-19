@@ -281,6 +281,7 @@ class pam (
   # Include PAM Password quality configuration.
   if ($facts['os']['family'] in ['RedHat','Suse','Debian']) {
     include pam::pwquality
+    include pam::faillock
   }
 
   if ($facts['os']['family'] in ['RedHat','Suse','Debian']) {
