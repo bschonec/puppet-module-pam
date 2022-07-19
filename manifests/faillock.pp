@@ -14,7 +14,7 @@
 #
 class pam::faillock (
   Stdlib::Absolutepath $dir = '/var/run/faillock',
-  Boolean $audit            = false,
+  Boolean $faillock_audit   = false,
   Boolean $silent           = false,
   Boolean $no_log_info      = false,
   Boolean $local_users_only = false,

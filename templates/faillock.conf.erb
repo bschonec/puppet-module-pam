@@ -10,17 +10,14 @@
 #
 # Will log the user name into the system log if the user is not found.
 # Enabled if option is present.
-# audit
-<% if not @audit %># <% end %>audit
+<% if not @faillock_audit %># <% end %>audit
 #
 # Don't print informative messages.
 # Enabled if option is present.
-# silent
 <% if not @silent %># <% end %>silent
 #
 # Don't log informative messages via syslog.
 # Enabled if option is present.
-# no_log_info
 <% if not @no_log_info %># <% end %>no_log_info 
 #
 # Only track failed user authentications attempts for local users
@@ -52,7 +49,7 @@
 #
 # Root account can become locked as well as regular accounts.
 # Enabled if option is present.
-# even_deny_root
+<% if not @even_deny_root %># <% end %>even_deny_root
 #
 # This option implies the `even_deny_root` option.
 # Allow access after n seconds to root account after the
