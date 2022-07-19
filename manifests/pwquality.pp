@@ -44,7 +44,7 @@ class pam::pwquality (
         
   # pwquality settings that are common to RHEL7, 8 and 9.
   concat::fragment {'rhelcommon':
-    target  => pwquality_conf_file,
+    target  => $pwquality_conf_file,
     order   => 10,
     content => template('pam/pwquality.conf.rhelcommon.erb'),
   }
