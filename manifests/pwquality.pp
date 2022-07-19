@@ -24,9 +24,9 @@ class pam::pwquality (
   Integer[0] $maxclassrepeat,
   Integer[0] $maxsequence,
   Integer[0] $dictcheck,
-  Boolean $gecoscheck,
-  Optional[Array[String[1]]] $badwords,
-  Optional[Stdlib::Absolutepath] $dictpath
+  Integer[0, 1] $gecoscheck = 0,
+  Optional[Array[String[1]]] $badwords = [],
+  Optional[Stdlib::Absolutepath] $dictpath = undef,
 ) {
 
   file { '/etc/security/pwquality.conf':
