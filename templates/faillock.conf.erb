@@ -62,4 +62,8 @@
 # the root account (the options `even_deny_root>` and
 # `root_unlock_time` will apply to them.
 # By default, the option is not set.
-<% if not @admin_group %># <% end %>admin_group = <%= @admin_group %>
+<% if not @admin_group %>
+# admin_group = <admin_group_name>
+<% else %>
+admin_group = <%= @admin_group %>
+<% end %>
