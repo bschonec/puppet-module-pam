@@ -7,7 +7,7 @@ pam::pwquality::debug: true
 # REVISIT THIS   pam::pwquality::dictpath: /path/to/dict
 pam::pwquality::difok: 5
 pam::pwquality::enforce_for_root: false
-pam::pwquality::gecoscheck: false
+pam::pwquality::gecoscheck: 0
 pam::pwquality::lcredit: 1
 pam::pwquality::local_users_only: false
 pam::pwquality::maxclassrepeat: 0
