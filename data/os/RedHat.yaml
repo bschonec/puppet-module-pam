@@ -19,3 +19,18 @@ pam::pwquality::ocredit: 1
 pam::pwquality::retry: 1
 pam::pwquality::ucredit: 1
 pam::pwquality::use_authtok: true
+
+
+
+pam::faillock::dir: '/var/run/faillock'
+pam::faillock::faillock_audit: false
+pam::faillock::silent: false
+pam::faillock::no_log_info: false
+pam::faillock::local_users_only: false
+pam::faillock::deny: 3
+pam::faillock::fail_interval: 900
+pam::faillock::unlock_time: 600
+pam::faillock::even_deny_root: false
+pam::faillock::root_unlock_time: 900
+pam::faillock::admin_group: ~
+pam::faillock::faillock_conf_file: '/etc/security/faillock.conf'
