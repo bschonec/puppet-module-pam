@@ -13,18 +13,17 @@
 #   'required', 'requisite', 'sufficient', 'optional' and 'absent'.
 #
 class pam::faillock (
-  Stdlib::Absolutepath $dir,
-  Boolean $faillock_audit,
-  Boolean $silent,
-  Boolean $no_log_info,
-  Boolean $local_users_only,
-  Integer[0] $deny,
-  Integer[0] $fail_interval,
-  Integer[0] $unlock_time,
-  Boolean $even_deny_root,
-  Integer[0] $root_unlock_time,
-  Optional[String[1]] $admin_group,
-  Stdlib::Absolutepath $faillock_conf_file,
+  Stdlib::Absolutepath $dir                = '/var/run/faillock',
+  Boolean $faillock_audit                  = false,
+  Boolean $silent                          = false,
+  Boolean $no_log_info                     = false,
+  Integer[0] $deny                         = 3,
+  Integer[0] $fail_interval                = 900,
+  Integer[0] $unlock_time                  = 600,
+  Boolean $even_deny_root                  = false,
+  Integer[0] $root_unlock_time             = 900,
+  Optional[String[1]] $admin_group         = undef,
+  Stdlib::Absolutepath $faillock_conf_file = '/etc/security/faillock.conf',
 ) {
 
   # For now, only RHEL8 and newer are supported.
