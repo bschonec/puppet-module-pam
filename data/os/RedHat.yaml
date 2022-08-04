@@ -2,22 +2,16 @@
 
 pam::pwquality::authtok_type: ~
 pam::pwquality::badwords: ~
-pam::pwquality::dcredit: 1
 pam::pwquality::debug: true
 # REVISIT THIS   pam::pwquality::dictpath: /path/to/dict
-pam::pwquality::difok: 5
 pam::pwquality::enforce_for_root: false
 pam::pwquality::gecoscheck: 0
-pam::pwquality::lcredit: 1
 pam::pwquality::local_users_only: false
 pam::pwquality::maxclassrepeat: 0
 pam::pwquality::maxrepeat: 0
 pam::pwquality::maxsequence: 0
 pam::pwquality::minclass: 0
-pam::pwquality::minlen: 9
-pam::pwquality::ocredit: 1
 pam::pwquality::retry: 1
-pam::pwquality::ucredit: 1
 pam::pwquality::use_authtok: true
 
 

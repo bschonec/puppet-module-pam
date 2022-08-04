@@ -51,5 +51,11 @@ pam::pam_password_session_lines:
 
 # PAM pwquality parameters that aren't available in RHEL7 and older
 pam::pwquality::dictcheck: 1
+pam::pwquality::difok: 1
+pam::pwquality::minlen: 8
+pam::pwquality::dcredit: 0
 pam::pwquality::enforcing: 1
+pam::pwquality::lcredit: 0
 pam::pwquality::usercheck: 1
+pam::pwquality::ocredit: 0
+pam::pwquality::ucredit: 0

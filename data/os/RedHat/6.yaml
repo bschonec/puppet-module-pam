@@ -47,3 +47,11 @@ pam::pam_password_session_lines:
   - 'session     required      pam_limits.so'
   - 'session     [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid'
   - 'session     required      pam_unix.so'
+
+
+pam::pwquality::minlen: 9
+pam::pwquality::ocredit: 1
+pam::pwquality::ucredit: 1
+pam::pwquality::dcredit: 1
+pam::pwquality::difok: 5
+pam::pwquality::lcredit: 1
