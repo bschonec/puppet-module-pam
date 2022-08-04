@@ -12,3 +12,6 @@ hierarchy:
   # Used to distinguish between Debian and Ubuntu
   - name: "osname/major_release"
     path: "os/%{facts.os.name}/%{facts.os.release.major}.yaml"
+  - name: "osfamily"
+    paths:
+      - "os/%{facts.os.family}.yaml"  # eg: RedHat
