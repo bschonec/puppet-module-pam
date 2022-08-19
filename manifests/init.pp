@@ -290,10 +290,8 @@ class pam (
   # Check that a vaild submodule to run was specified.  Loop around every value in $run_submodule
   # and see if the corresponding value exists in $valid_submodules.
   $run_submodule.unique.each | $submodule | {
-    if ($submodule in $valid_submodules) {
-      fail ("Found ${run_submodule} in ${valid_submodules}.")
-    } else {
-      fail ("Didn't' find ${run_submodule} in ${valid_submodules}.")
+    if !($submodule in $valid_submodules) {
+      fail ("Invalid submodule specified in $run_submodule.  Valid values are ${valid_submodules.sort.unique}.")
     } 
   }
 
