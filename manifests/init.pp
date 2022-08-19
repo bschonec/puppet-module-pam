@@ -284,19 +284,22 @@ class pam (
     }
   }
 
+  # Append the PAM common files that we (might) modify to the run_submodule array
+  $_run_submodule = $run_submodule + $common_files
+
   if ($facts['os']['family'] in ['RedHat','Suse','Debian']) {
 
-    # Include only the 'submodules' specified in the $run_submodule array.
-    if ('accesslogin' in $run_submodule) { include pam::accesslogin}
-    if ('limits' in $run_submodule) { include pam::limits}
+    # Include only the 'submodules' specified in the $_run_submodule array.
+    if ('accesslogin' in $_run_submodule) { include pam::accesslogin}
+    if ('limits' in $_run_submodule) { include pam::limits}
 
     package { $package_name:
       ensure => installed,
     }
 
 
-    # Modify the pam.d login file only if 'pam_d_login' was specified in the $run_submodule array.
-    if ('pam_d_login' in $run_submodule) {
+    # Modify the pam.d login file only if 'pam_d_login' was specified in the $_run_submodule array.
+    if ('pam_d_login' in $_run_submodule) {
       file { 'pam_d_login':
         ensure  => file,
         path    => $pam_d_login_path,
@@ -307,8 +310,8 @@ class pam (
       }
     }
 
-    # Modify the pam.d sshd file only if 'pam_d_sshd' was specified in the $run_submodule array.
-    if ('pam_d_sshd' in $run_submodule) {
+    # Modify the pam.d sshd file only if 'pam_d_sshd' was specified in the $_run_submodule array.
+    if ('pam_d_sshd' in $_run_submodule) {
       file { 'pam_d_sshd':
         ensure  => file,
         path    => $pam_d_sshd_path,
@@ -363,25 +366,33 @@ class pam (
       }
     }
 
-    file { $_resource_name:
-      ensure  => file,
-      path    => $_real_path,
-      content => template("pam/${_common_file}.erb"),
-      owner   => 'root',
-      group   => $_real_group,
-      mode    => '0644',
-      require => Package[$package_name],
-    }
 
-    if $common_files_create_links == true {
-      file { "pam_${_common_file}":
-        ensure  => link,
-        path    => getvar("${_common_file}_file"),
-        target  => getvar("${_common_file}${common_files_suffix}_file"),
+    # Modify the pam.d sshd file only if 'pam_d_sshd' was specified in the $_run_submodule array.
+    if ($_common_file in $_run_submodule) {
+      file { $_resource_name:
+        ensure  => file,
+        path    => $_real_path,
+        content => template("pam/${_common_file}.erb"),
         owner   => 'root',
         group   => $_real_group,
+        mode    => '0644',
         require => Package[$package_name],
       }
+  
+      if $common_files_create_links == true {
+        file { "pam_${_common_file}":
+          ensure  => link,
+          path    => getvar("${_common_file}_file"),
+          target  => getvar("${_common_file}${common_files_suffix}_file"),
+          owner   => 'root',
+          group   => $_real_group,
+          require => Package[$package_name],
+        }
+      }
     }
+
+
+
+
   }
 }
