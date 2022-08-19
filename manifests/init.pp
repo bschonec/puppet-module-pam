@@ -297,17 +297,17 @@ class pam (
 
   if ($facts['os']['family'] in ['RedHat','Suse','Debian']) {
 
-    # Include only the 'submodules' specified in the $valid_submodules array.
-    if ('accesslogin' in $valid_submodules) { include pam::accesslogin}
-    if ('limits' in $valid_submodules) { include pam::limits}
+    # Include only the 'submodules' specified in the $run_submodule array.
+    if ('accesslogin' in $run_submodule) { include pam::accesslogin}
+    if ('limits' in $run_submodule) { include pam::limits}
 
     package { $package_name:
       ensure => installed,
     }
 
 
-    # Modify the pam.d login file only if 'pam_d_login' was specified in the $valid_submodules array.
-    if ('pam_d_login' in $valid_submodules) {
+    # Modify the pam.d login file only if 'pam_d_login' was specified in the $run_submodule array.
+    if ('pam_d_login' in $run_submodule) {
       file { 'pam_d_login':
         ensure  => file,
         path    => $pam_d_login_path,
@@ -318,8 +318,8 @@ class pam (
       }
     }
 
-    # Modify the pam.d sshd file only if 'pam_d_sshd' was specified in the $valid_submodules array.
-    if ('pam_d_sshd' in $valid_submodules) {
+    # Modify the pam.d sshd file only if 'pam_d_sshd' was specified in the $run_submodule array.
+    if ('pam_d_sshd' in $run_submodule) {
       file { 'pam_d_sshd':
         ensure  => file,
         path    => $pam_d_sshd_path,
@@ -375,8 +375,8 @@ class pam (
     }
 
 
-    # Modify the pam.d sshd file only if 'pam_d_sshd' was specified in the $valid_submodules array.
-    if ($_common_file in $valid_submodules) {
+    # Modify the pam.d sshd file only if 'pam_d_sshd' was specified in the $run_submodule array.
+    if ($_common_file in $run_submodule) {
       file { $_resource_name:
         ensure  => file,
         path    => $_real_path,
