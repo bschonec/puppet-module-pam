@@ -186,6 +186,11 @@
 # @param common_files_suffix
 #   Suffix added to the common_files entries for the filename.
 #
+# @param run_submodule
+#   Array of names of the sub-modules to run.  You can select individual sub-modules
+#   (such as ['limits', 'accesslogon'] and this module will limit modification of
+#   the system just to the modules you specify.  Default is 'all'.
+#
 class pam (
   Variant[Array, Hash, String] $allowed_users               = 'root',
   Enum['absent', 'optional', 'required', 'requisite', 'sufficient']
@@ -238,6 +243,7 @@ class pam (
   Array $common_files                                       = [],
   Boolean $common_files_create_links                        = false,
   Optional[String] $common_files_suffix                     = undef,
+  Enum['all', 'accesslogin', 'limits', 'pam_d_login', 'pam_d_ssh'] $run_submodule = 'all',
 ) {
 
 
@@ -279,29 +285,38 @@ class pam (
   }
 
   if ($facts['os']['family'] in ['RedHat','Suse','Debian']) {
-    include pam::accesslogin
-    include pam::limits
+
+    # Include only the 'submodules' specified in the $run_submodule array.
+    if ('accesslogin' in $run_submodule) { include pam::accesslogin}
+    if ('limits' in $run_submodule) { include pam::limits}
 
     package { $package_name:
       ensure => installed,
     }
 
-    file { 'pam_d_login':
-      ensure  => file,
-      path    => $pam_d_login_path,
-      content => template($pam_d_login_template),
-      owner   => $pam_d_login_owner,
-      group   => $pam_d_login_group,
-      mode    => $pam_d_login_mode,
+
+    # Modify the pam.d login file only if 'pam_d_login' was specified in the $run_submodule array.
+    if ('pam_d_login' in $run_submodule) {
+      file { 'pam_d_login':
+        ensure  => file,
+        path    => $pam_d_login_path,
+        content => template($pam_d_login_template),
+        owner   => $pam_d_login_owner,
+        group   => $pam_d_login_group,
+        mode    => $pam_d_login_mode,
+      }
     }
 
-    file { 'pam_d_sshd':
-      ensure  => file,
-      path    => $pam_d_sshd_path,
-      content => template($pam_d_sshd_template),
-      owner   => $pam_d_sshd_owner,
-      group   => $pam_d_sshd_group,
-      mode    => $pam_d_sshd_mode,
+    # Modify the pam.d sshd file only if 'pam_d_sshd' was specified in the $run_submodule array.
+    if ('pam_d_sshd' in $run_submodule) {
+      file { 'pam_d_sshd':
+        ensure  => file,
+        path    => $pam_d_sshd_path,
+        content => template($pam_d_sshd_template),
+        owner   => $pam_d_sshd_owner,
+        group   => $pam_d_sshd_group,
+        mode    => $pam_d_sshd_mode,
+      }
     }
   }
 
