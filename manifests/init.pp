@@ -243,7 +243,7 @@ class pam (
   Array $common_files                                       = [],
   Boolean $common_files_create_links                        = false,
   Optional[String] $common_files_suffix                     = undef,
-  Enum['all', 'accesslogin', 'limits', 'pam_d_login', 'pam_d_ssh'] $run_submodule = 'all',
+  Array[Enum['all', 'accesslogin', 'limits', 'pam_d_login', 'pam_d_ssh']] $run_submodule = 'all',
 ) {
 
 
