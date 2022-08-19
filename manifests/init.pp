@@ -243,7 +243,7 @@ class pam (
   Array $common_files                                       = [],
   Boolean $common_files_create_links                        = false,
   Optional[String] $common_files_suffix                     = undef,
-  Array[Enum['all', 'accesslogin', 'limits', 'pam_d_login', 'pam_d_ssh']] $run_submodule = 'all',
+  Array $run_submodule = 'all',
 ) {
 
 
@@ -284,8 +284,13 @@ class pam (
     }
   }
 
-  # Append the PAM common files that we (might) modify to the run_submodule array
-  $_run_submodule = $run_submodule + $common_files
+  # Check that a vaild submodule to run was specified.
+  $valid_submodules = lookup('pam::submodules', Array[String], 'unique', []) +  $common_files
+  if ($run_submodule in $valid_submodules) {
+    fail ("Found ${run_submodule} in ${valid_submodules}.")
+  } else {
+    fail ("Didn't' find ${run_submodule} in ${valid_submodules}.")
+  } 
 
   if ($facts['os']['family'] in ['RedHat','Suse','Debian']) {
 
