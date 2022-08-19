@@ -291,7 +291,7 @@ class pam (
   # and see if the corresponding value exists in $valid_submodules.
   $run_submodule.unique.each | $submodule | {
     if !($submodule in $valid_submodules) {
-      fail ("Invalid submodule specified in $run_submodule.  Valid values are ${valid_submodules.sort.unique}.")
+      fail ("Invalid submodule specified in \$pam::run_submodule variable.  Valid values are ${valid_submodules.sort.unique}.")
     } 
   }
 
@@ -373,7 +373,6 @@ class pam (
         $_real_path     = getvar("${_common_file}${common_files_suffix}_file")
       }
     }
-
 
     # Modify the pam.d sshd file only if 'pam_d_sshd' was specified in the $run_submodule array.
     if ($_common_file in $run_submodule) {
