@@ -26,7 +26,7 @@ class pam::faillock (
   Stdlib::Absolutepath $faillock_conf_file = '/etc/security/faillock.conf',
 ) {
 
-  # For now, only RHEL8 and newer are supported.
+  # Only RHEL7 and newer are supported.
   if ($facts['os']['release']['major'] in ['7', '8', '9']) {
     concat { $faillock_conf_file:
       owner   => $pam_d_login_owner,
