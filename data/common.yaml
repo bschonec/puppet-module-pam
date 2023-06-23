@@ -1,1 +1,8 @@
---- {}
+---
+
+pam::submodules:
+  - all
+  - accesslogin
+  - limits
+  - pam_d_login
+  - pam_d_ssh

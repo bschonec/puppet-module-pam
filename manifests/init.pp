@@ -186,6 +186,11 @@
 # @param common_files_suffix
 #   Suffix added to the common_files entries for the filename.
 #
+# @param run_submodule
+#   Array of names of the sub-modules to run.  You can select individual sub-modules
+#   (such as ['limits', 'accesslogon'] and this module will limit modification of
+#   the system just to the modules you specify.  Default is 'all'.
+#
 class pam (
   Variant[Array, Hash, String] $allowed_users               = 'root',
   Enum['absent', 'optional', 'required', 'requisite', 'sufficient']
@@ -238,6 +243,7 @@ class pam (
   Array $common_files                                       = [],
   Boolean $common_files_create_links                        = false,
   Optional[String] $common_files_suffix                     = undef,
+  Array $run_submodule                                      = 'all',
 ) {
   # Fail on unsupported platforms
   if $facts['os']['family'] == 'RedHat' and !($facts['os']['release']['major'] in ['2','5','6','7','8', '9']) {
@@ -276,30 +282,50 @@ class pam (
     }
   }
 
+  # Build an array of all valid submodules supported.
+  $valid_submodules = lookup('pam::submodules', Array[String], 'unique', []) +  $common_files
+
+  # Check that a vaild submodule to run was specified.  Loop around every value in $run_submodule
+  # and see if the corresponding value exists in $valid_submodules.
+  $run_submodule.unique.each | $submodule | {
+    if !($submodule in $valid_submodules) {
+      fail ("Invalid submodule specified in \$pam::run_submodule variable.  Valid values are ${valid_submodules.sort.unique}.")
+    } 
+  }
+
   if ($facts['os']['family'] in ['RedHat','Suse','Debian']) {
-    include pam::accesslogin
-    include pam::limits
+
+    # Include only the 'submodules' specified in the $run_submodule array.
+    if ('accesslogin' in $run_submodule) { include pam::accesslogin}
+    if ('limits' in $run_submodule) { include pam::limits}
 
     package { $package_name:
       ensure => installed,
     }
 
-    file { 'pam_d_login':
-      ensure  => file,
-      path    => $pam_d_login_path,
-      content => template($pam_d_login_template),
-      owner   => $pam_d_login_owner,
-      group   => $pam_d_login_group,
-      mode    => $pam_d_login_mode,
+
+    # Modify the pam.d login file only if 'pam_d_login' was specified in the $run_submodule array.
+    if ('pam_d_login' in $run_submodule) {
+      file { 'pam_d_login':
+        ensure  => file,
+        path    => $pam_d_login_path,
+        content => template($pam_d_login_template),
+        owner   => $pam_d_login_owner,
+        group   => $pam_d_login_group,
+        mode    => $pam_d_login_mode,
+      }
     }
 
-    file { 'pam_d_sshd':
-      ensure  => file,
-      path    => $pam_d_sshd_path,
-      content => template($pam_d_sshd_template),
-      owner   => $pam_d_sshd_owner,
-      group   => $pam_d_sshd_group,
-      mode    => $pam_d_sshd_mode,
+    # Modify the pam.d sshd file only if 'pam_d_sshd' was specified in the $run_submodule array.
+    if ('pam_d_sshd' in $run_submodule) {
+      file { 'pam_d_sshd':
+        ensure  => file,
+        path    => $pam_d_sshd_path,
+        content => template($pam_d_sshd_template),
+        owner   => $pam_d_sshd_owner,
+        group   => $pam_d_sshd_group,
+        mode    => $pam_d_sshd_mode,
+      }
     }
   }
 
@@ -346,25 +372,32 @@ class pam (
       }
     }
 
-    file { $_resource_name:
-      ensure  => file,
-      path    => $_real_path,
-      content => template("pam/${_common_file}.erb"),
-      owner   => 'root',
-      group   => $_real_group,
-      mode    => '0644',
-      require => Package[$package_name],
-    }
-
-    if $common_files_create_links == true {
-      file { "pam_${_common_file}":
-        ensure  => link,
-        path    => getvar("${_common_file}_file"),
-        target  => getvar("${_common_file}${common_files_suffix}_file"),
+    # Modify the pam.d sshd file only if 'pam_d_sshd' was specified in the $run_submodule array.
+    if ($_common_file in $run_submodule) {
+      file { $_resource_name:
+        ensure  => file,
+        path    => $_real_path,
+        content => template("pam/${_common_file}.erb"),
         owner   => 'root',
         group   => $_real_group,
+        mode    => '0644',
         require => Package[$package_name],
       }
+  
+      if $common_files_create_links == true {
+        file { "pam_${_common_file}":
+          ensure  => link,
+          path    => getvar("${_common_file}_file"),
+          target  => getvar("${_common_file}${common_files_suffix}_file"),
+          owner   => 'root',
+          group   => $_real_group,
+          require => Package[$package_name],
+        }
+      }
     }
+
+
+
+
   }
 }
