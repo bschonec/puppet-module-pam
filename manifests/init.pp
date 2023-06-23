@@ -243,7 +243,7 @@ class pam (
   Array $common_files                                       = [],
   Boolean $common_files_create_links                        = false,
   Optional[String] $common_files_suffix                     = undef,
-  Array $run_submodule = 'all',
+  Array $run_submodule                                      = 'all',
 ) {
 
 
